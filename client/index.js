@@ -58,13 +58,13 @@ class App extends React.Component {
       array.unshift(newNum);
       this.setState({ lastTenCrashes: array });
     }
-    // axios.post(`/results`, { result: newNum })
-    //   .then((response) => {
-    //     console.log('you sent a result');
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
+    axios.post(`/results`, { result: newNum })
+      .then((response) => {
+        console.log('you sent a result');
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
 
   getFirstTen = () => {
@@ -89,7 +89,6 @@ class App extends React.Component {
     if (randomNum < 0.66) {
       this.setState({ targetSec: Math.floor(Math.random() * (14 - 2 + 1) + 2), targetMs: Math.floor(Math.random() * (960 - 0 + 1) + 0) })
     } else {
-      console.log('hit 1/3')
       this.setState({ targetSec: 1, targetMs: 200 })
     }
   }
@@ -159,12 +158,10 @@ class App extends React.Component {
 
   handleChangeUsername = (e) => {
     this.setState({ username: e.target.value })
-    console.log(this.state.username)
   }
 
   handleChangePassword = (e) => {
     this.setState({ password: e.target.value })
-    console.log(this.state.password)
   }
 
   submitGitOut = () => {
@@ -192,10 +189,8 @@ class App extends React.Component {
     axios.get(`/login/${this.state.username}`)
       .then((result) => {
         if(this.state.password === result.data[0].password) {
-          console.log(result.data[0])
           this.setState({ loginStatus: 'success', currentBalance: Number(result.data[0].points), loginId: result.data[0].id})
           setTimeout(() => {
-            console.log(this.state.currentBalance, this.state.loginId)
             this.setState({ loginStatus: true })
           }, 1500)
         } else {
@@ -227,6 +222,7 @@ class App extends React.Component {
   }
 
   componentDidMount = () => {
+    console.log('Stay out of here nerds!')
     this.getFirstTen();
     this.getRandomNumbers();
     this.startCountDown();
