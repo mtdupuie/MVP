@@ -12,6 +12,77 @@ body {
   display: grid;
 }
 
+/* Login view section */
+.login-plate {
+  height: 890px;
+  width: 1100px;
+  background-color: gray;
+  margin: auto;
+  margin-top: 20px;
+  position: relative;
+}
+
+.loginSection {
+  height: 600px;
+  width: 600px;
+  background-color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loginContainer {
+  height: 570px;
+  width: 570px;
+  margin-top: 15px;
+  margin-left: 15px;
+  background-color: honeydew;
+  display: flex;
+  flex-direction: column;
+}
+
+.loginHeader {
+  text-align: center;
+  margin: 10px;
+  margin-top: 190px;
+}
+
+.usernameText {
+  margin-left: 15px;
+}
+
+.usernameInput {
+  margin: 15px;
+  margin-top: 5px;
+}
+
+.passwordText {
+  margin-left: 15px;
+}
+
+.passwordInput {
+  margin: 15px;
+  margin-top: 5px;
+}
+
+.loginButton {
+  margin: 15px;
+}
+
+.welcome {
+  height: 600px;
+  width: 600px;
+  background-color: green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  color: white;
+  font-size: 100px;
+}
+
+/* Top header section */
 .titleContainer {
   height: 65px;
   width: 1050px;
@@ -43,15 +114,18 @@ body {
   position: relative;
 }
 
-.TopTenEntry {
+.TopTenEntryBackground {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 20px;
-  width: 40px;
-  text-align: center;
-  padding-top: 5px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  background-color: rgb(204, 204, 204);
+  border-radius: 4px;
 }
 
 /* Center of the app section Chart and Players*/
@@ -83,6 +157,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-size: 100px;
 }
 
 .playersSection {
@@ -152,9 +227,10 @@ body {
   transform: translate(-50%, -50%);
   background-color: ivory;
   height: 30px;
-  width: 200px;
-  text-align: center;
-  padding-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
 
 .overallContainer {
