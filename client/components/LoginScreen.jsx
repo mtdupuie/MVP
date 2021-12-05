@@ -13,10 +13,11 @@ const LoginScreen = (props) => {
           <button className="loginButton" onClick={() => {props.submitSignUp()}}>Sign Up</button>
           <button className="loginButton" onClick={() => {props.submitLogin()}}>Login</button>
           {props.loginAlertStatus ?
-          <div className="usernameText">{props.loginAlert}</div>
+          <div className="betAlert"  style={{textAlign: 'center'}}>{props.loginAlert}</div>
           :
           null
           }
+          <div className="disclaimer">*Please do not use real passwords. This is an educational project and I do have access to the information <i className="fa fa-thumbs-up"></i>*</div>
         </div>
       </div>
     </div>

@@ -60,7 +60,7 @@ class App extends React.Component {
     }
     axios.post(`/results`, { result: newNum })
       .then((response) => {
-        console.log('you sent a result');
+        null
       })
       .catch((error) => {
         console.log(error);
@@ -172,7 +172,7 @@ class App extends React.Component {
         setTimeout(() => {
           axios.put(`/addPoints`, { id: this.state.loginId, points: this.state.currentBalance})
           .then((results) => {
-            console.log('added to db');
+            null;
           })
           .catch((error) => {
             console.log(error);
@@ -244,64 +244,70 @@ class App extends React.Component {
     } else if (this.state.loginStatus === 'success') {
       return (
         <div className="login-plate">
-          <div className="loginSection">
             <div className="welcome">WELCOME</div>
-          </div>
-      </div>
+        </div>
       )
     } else {
       return (
-        <div className="app-plate">
-          <div className="app-conainter">
-            <div className="titleContainer">
-              <h1 className="title">Hack In Or Git Out!</h1>
-            </div>
-            <div className="lastTenSection">
-              <LastTen
-                lastTenCrashes={this.state.lastTenCrashes} />
-            </div>
-            <div className="centerContainer">
-              <div className="chartSection">
-                <div className="chartContainer">
-                  {this.state.gameActive === true ?
-                  <div className="chart">{this.state.crashSec}.{this.state.crashMs}x</div>
+        // <div className="app-plate-container"></div>
+          <div className="app-plate">
+            <div className="app-conainter">
+              <div className="titleContainer">
+                <h1 className="title">Hack In Or Git Out!</h1>
+              </div>
+              <div className="lastTenSection">
+                <LastTen
+                  lastTenCrashes={this.state.lastTenCrashes} />
+              </div>
+              <div className="centerContainer">
+                <div className="chartSection">
+                  <div className="chartContainer">
+                    {this.state.gameActive === true ?
+                    <div className="chart">{this.state.crashSec}.{this.state.crashMs}x</div>
+                    :
+                    <div className="chart">
+                    <div className="chartText">The next</div>
+                    <div className="chartText">round starts</div>
+                    <div className="chartText">in {this.state.countDown}!</div>
+                    </div>
+                    }
+                  </div>
+                </div>
+                <div className="playersSection">
+                  <div className="playersContainer">
+                    <PlayersList />
+                  </div>
+                </div>
+              </div>
+              <div className="playerInput">
+                <div className="betAmountContainer">
+                  <input className="betAmount" placeholder="Place your bet!" value={this.state.betValueInput} onChange={this.handleChangeBetValue}></input>
+                  {this.state.alert ?
+                  <div className="betAlert">{this.state.alertMessage}</div>
                   :
-                  <div className="chart">The next round starts in {this.state.countDown}!</div>
+                  null}
+                </div>
+                <div className="betButtonContainer">
+                  {this.state.gameActive ?
+                  <button className="betButton" onClick={() => {this.submitGitOut()}}>GIT OUT!</button>
+                  :
+                  <button className="betButton" onClick={() => {this.submitBet()}}>Bet!</button>
+                  }
+                  {this.state.crashAlert ?
+                  <div className="getOutAlert">You got out at {this.state.gotOutNum.toFixed(2)}x</div>
+                  :
+                  null
                   }
                 </div>
-              </div>
-              <div className="playersSection">
-                <div className="playersContainer">
-                  <PlayersList />
+                <div className="currentBalanceContainer">
+                  <div className="currentBalance">Balance: {(this.state.currentBalance).toLocaleString(undefined, { minimumFractionDigits: 2 } )}</div>
                 </div>
-              </div>
-            </div>
-            <div className="playerInput">
-              <div className="betAmountContainer">
-                <input className="betAmount" placeholder="Place your bet!" value={this.state.betValueInput} onChange={this.handleChangeBetValue}></input>
-                {this.state.alert ? <div style={{marginTop: '20px', marginLeft: '52px'}}>{this.state.alertMessage}</div> : null}
-              </div>
-              <div className="betButtonContainer">
-                {this.state.gameActive ?
-                <button className="betButton" onClick={() => {this.submitGitOut()}}>GIT OUT!</button>
-                :
-                <button className="betButton" onClick={() => {this.submitBet()}}>Bet!</button>
-                }
-                {this.state.crashAlert ?
-                <div style={{marginTop: '20px', marginLeft: '52px'}}>You got out at {this.state.gotOutNum.toFixed(2)}x</div>
-                :
-                null
-                }
-              </div>
-              <div className="currentBalanceContainer">
-                <div className="currentBalance">Balance: {(this.state.currentBalance).toLocaleString(undefined, { minimumFractionDigits: 2 } )}</div>
-              </div>
-              <div className="overallContainer">
-                <div className="overall">+/- on the day</div>
+                {/* <div className="overallContainer">
+                  <div className="overall">+/- on the day</div>
+                </div> */}
               </div>
             </div>
           </div>
-        </div>
       )
     }
   }

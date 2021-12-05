@@ -1,8 +1,6 @@
 const express = require('express');
 const path = require('path');
-const db = require('../db')
-
-console.log(db)
+const db = require('../db');
 
 // create server
 const app = express();
