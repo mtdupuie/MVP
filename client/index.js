@@ -222,7 +222,26 @@ class App extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log('Stay out of here nerds!')
+    let msg = `%c Hi 👋! Welcome to my site!`;
+    let styles= [
+    `font-size: 12px`,
+    `font-family: monospace`,
+    `background: white`,
+    `display: inline-block`,
+    `color: black`,
+    `padding: 8px 19px`,
+    `border: 1px dashed;`
+    ].join(`;`)
+    let stylesArray= [
+      `background-size: cover`,
+      `color: #fff`,
+      `padding: 10px 20px`,
+      `line-height: 35px`,
+      `width : 70px`,
+      `height : 70px`,
+      `border : 5px solid black` ].join(`;`)
+    console.log(msg, styles);
+    console.log(`%c Having Fun!?`, stylesArray);
     this.getFirstTen();
     this.getRandomNumbers();
     this.startCountDown();
