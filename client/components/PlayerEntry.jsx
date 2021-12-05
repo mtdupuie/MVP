@@ -1,19 +1,16 @@
 import React from 'react';
 
-const PlayerEntry = () => {
+const PlayerEntry = (props) => {
   return (
-    <>
-    <div className="playerEntry">Test</div>
-    <div className="playerEntry">Test</div>
-    <div className="playerEntry">Test</div>
-    <div className="playerEntry">Test</div>
-    <div className="playerEntry">Test</div>
-    <div className="playerEntry">Test</div>
-    <div className="playerEntry">Test</div>
-    <div className="playerEntry">Test</div>
-    <div className="playerEntry">Test</div>
-    <div className="playerEntry">Test</div>
-    </>
+    <div className="playerEntry">
+      <div className="playerName">{props.username}</div>
+      {props.lastWinLostBool[props.index] ?
+      <div className="playerAmount" style={{color: 'green'}}> +  {props.lastWinLost[props.index]}</div>
+      :
+      <div className="playerAmount" style={{color: 'red'}}> -  {props.lastWinLost[props.index]}</div>
+      }
+
+    </div>
   )
 }
 

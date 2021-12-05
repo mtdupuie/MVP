@@ -12,9 +12,6 @@ class App extends React.Component {
       loginAlert: '',
       loginAlertStatus: false,
       loginStatus: false,
-      gameActive: false,
-      betValueInput: '',
-      betValue: 0,
       currentBalance: 100,
       lastTenCrashes: [],
       activeUsers: [],
@@ -29,13 +26,18 @@ class App extends React.Component {
       started: null,
       countDownStarted: null,
       countDown: 6,
-      crash: false,
+      lastWinLost: [],
+      lastWinLostBool: [],
+      betValue: 0,
+      betValueInput: '',
+      gameActive: false,
       alertMessage: '',
-      alert: false,
+      crash: false,
       crashAlert: false,
       gotOutNum: 0,
       gotOut: false,
-      betPlaced: false
+      betPlaced: false,
+      alert: false,
     }
     this.handleChangeUsername = this.handleChangeUsername.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
@@ -60,7 +62,7 @@ class App extends React.Component {
     }
     axios.post(`/results`, { result: newNum })
       .then((response) => {
-        null
+        var result = response;
       })
       .catch((error) => {
         console.log(error);
@@ -94,6 +96,25 @@ class App extends React.Component {
   }
 
   /*
+   * Handle win lost board
+   */
+  winLoss = (bool, num) => {
+    var newArray1 = this.state.lastWinLost
+    var newArray2 = this.state.lastWinLostBool
+    if (this.state.lastTenCrashes.length < 16) {
+      newArray1.unshift(num);
+      newArray2.unshift(bool);
+      this.setState({ lastWinLost: newArray1, lastWinLostBool: newArray2 });
+    } else {
+      newArray1.pop();
+      newArray2.pop();
+      newArray1.unshift(num);
+      newArray2.unshift(bool);
+      this.setState({ lastWinLost: newArray1, lastWinLostBool: newArray2 });
+    }
+  }
+
+  /*
    *  Countdown functions
   */
   startCountDown = () => {
@@ -121,6 +142,9 @@ class App extends React.Component {
   clockRunning = () => {
     if (this.state.crashSec === this.state.targetSec && (this.state.crashMs > this.state.targetMs) && (this.state.crashMs < 9999)) {
       clearInterval(this.state.started);
+      if (this.state.betPlaced && !this.state.gotOut) {
+        this.winLoss(false, this.state.betValue)
+      }
       this.updateLastTen(this.state.crashSec, this.state.crashMs);
       setTimeout(() => {
         this.setState({ gameActive: false })
@@ -151,7 +175,7 @@ class App extends React.Component {
       } else {
         this.setState({ betValue: this.state.betValueInput, betValueInput: '', betPlaced: true, alertMessage: 'You have placed a bet!' });
         setTimeout(()=> {
-          this.setState({ currentBalance: this.state.currentBalance - this.state.betValue, alert: true });
+          this.setState({ currentBalance: this.state.currentBalance - this.state.betValue, alert: true, betValueInput: '' });
         }, 100)
       }
   }
@@ -167,17 +191,19 @@ class App extends React.Component {
   submitGitOut = () => {
     if (this.state.betPlaced) {
       if (this.state.crashSec >= 2 && this.state.gameActive && !this.state.gotOut) {
-        var toAdd = (this.state.betValue * Number(`${this.state.crashSec}.${this.state.crashMs}`)) + this.state.currentBalance;
-        this.setState({ currentBalance: toAdd.toFixed(2), crashAlert: true, gotOutNum: Number(`${this.state.crashSec}.${this.state.crashMs}`), gotOut: true, betValue: 0, betPlaced: false})
+        var tempNum = (this.state.betValue * Number(`${this.state.crashSec}.${this.state.crashMs}`))
+        var toAdd = tempNum + this.state.currentBalance;
+        this.setState({ currentBalance: Number(toAdd.toFixed(2)), crashAlert: true, gotOutNum: Number(`${this.state.crashSec}.${this.state.crashMs}`), gotOut: true, betValue: 0, betPlaced: false})
+        this.winLoss(true, tempNum.toLocaleString(undefined, { minimumFractionDigits: 2 } ));
         setTimeout(() => {
           axios.put(`/addPoints`, { id: this.state.loginId, points: this.state.currentBalance})
           .then((results) => {
-            null;
+            var result = results;
           })
           .catch((error) => {
             console.log(error);
           })
-        }, 500)
+        }, 100)
       }
     }
   }
@@ -294,7 +320,10 @@ class App extends React.Component {
                 </div>
                 <div className="playersSection">
                   <div className="playersContainer">
-                    <PlayersList />
+                    <PlayersList
+                      username={this.state.username}
+                      lastWinLost={this.state.lastWinLost}
+                      lastWinLostBool={this.state.lastWinLostBool} />
                   </div>
                 </div>
               </div>
