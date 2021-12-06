@@ -38,6 +38,7 @@ class App extends React.Component {
       gotOut: false,
       betPlaced: false,
       alert: false,
+      allowGetOut: true,
     }
     this.handleChangeUsername = this.handleChangeUsername.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
@@ -131,19 +132,20 @@ class App extends React.Component {
   }
 
   startGame = () => {
-    this.setState({timeBegan: new Date(), gameActive: true, crashAlert: false, gotOut: false, alert: false})
+    this.setState({timeBegan: new Date(), gameActive: true, crashAlert: false, gotOut: false, alert: false, betValueInput: ''})
     this.state.started = setInterval(this.clockRunning, 10);
   }
 
   resestGame = () => {
-    this.setState({ crashSec: 1 , crashMs: 0, timeBegan: null, start: null })
+    this.setState({ crashSec: 1 , crashMs: 0, timeBegan: null, start: null, allowGetOut: true, betPlaced:false })
   }
 
   clockRunning = () => {
     if (this.state.crashSec === this.state.targetSec && (this.state.crashMs > this.state.targetMs) && (this.state.crashMs < 9999)) {
+      this.setState({ allowGetOut: false })
       clearInterval(this.state.started);
       if (this.state.betPlaced && !this.state.gotOut) {
-        this.winLoss(false, this.state.betValue)
+        this.winLoss(false, Number(this.state.betValue).toLocaleString(undefined, { minimumFractionDigits: 2 } ))
       }
       this.updateLastTen(this.state.crashSec, this.state.crashMs);
       setTimeout(() => {
@@ -166,17 +168,19 @@ class App extends React.Component {
   }
 
   submitBet = () => {
-    if (this.state.betValueInput === '') {
-      this.setState({ alertMessage: 'You need enter a bet!', alert: true, betValueInput: '' })
-    } else if (!Number(this.state.betValueInput)) {
+    if (this.state.betValueInput === '' && !this.state.betPlaced) {
+      this.setState({ alertMessage: 'You need to enter a bet!', alert: true, betValueInput: '' })
+    } else if (!Number(this.state.betValueInput) && !this.state.betPlaced) {
       this.setState({ alertMessage: 'Please enter a valid number!', alert: true, betValueInput: '' })
-    } else if (this.state.betValueInput > this.state.currentBalance) {
+    } else if (this.state.betValueInput > this.state.currentBalance && !this.state.betPlaced) {
       this.setState({ alertMessage: 'You dont have enough points!', alert: true, betValueInput: '' })
       } else {
-        this.setState({ betValue: this.state.betValueInput, betValueInput: '', betPlaced: true, alertMessage: 'You have placed a bet!' });
+        if (!this.state.betPlaced) {
+        this.setState({ betValue: this.state.betValueInput, betValueInput: '', betPlaced: true, alertMessage: 'You have placed a bet!', alert: false });
         setTimeout(()=> {
-          this.setState({ currentBalance: this.state.currentBalance - this.state.betValue, alert: true, betValueInput: '' });
+          this.setState({ currentBalance: this.state.currentBalance - this.state.betValue, betValueInput: '' });
         }, 100)
+        }
       }
   }
 
@@ -189,7 +193,7 @@ class App extends React.Component {
   }
 
   submitGitOut = () => {
-    if (this.state.betPlaced) {
+    if (this.state.betPlaced && this.state.allowGetOut) {
       if (this.state.crashSec >= 2 && this.state.gameActive && !this.state.gotOut) {
         var tempNum = (this.state.betValue * Number(`${this.state.crashSec}.${this.state.crashMs}`))
         var toAdd = tempNum + this.state.currentBalance;
@@ -332,6 +336,10 @@ class App extends React.Component {
                   <input className="betAmount" placeholder="Place your bet!" value={this.state.betValueInput} onChange={this.handleChangeBetValue}></input>
                   {this.state.alert ?
                   <div className="betAlert">{this.state.alertMessage}</div>
+                  :
+                  null}
+                  {this.state.betPlaced ?
+                  <div className="betAlert" style={{color: 'green'}}>{this.state.alertMessage}</div>
                   :
                   null}
                 </div>
