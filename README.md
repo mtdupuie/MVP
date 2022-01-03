@@ -1,4 +1,4 @@
-# Crash Game
+# Hack In Or Git Out
 
 ## Hack In Or Git Out ##
  > This single page web game should get your blood flowing and time flying!
