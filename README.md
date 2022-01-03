@@ -1,6 +1,6 @@
 # Crash Game
 
-![github](https://user-images.githubusercontent.com/86014812/147951957-2fc991ae-7f38-4b54-9caf-40994767e793.gif)
+![github](https://user-images.githubusercontent.com/86014812/147951957-2fc991ae-7f38-4b54-9caf-40994767e793.mp4)
 
 ## Hack In Or Git Out ##
  > This single page web game should get your blood flowing and time flying!
