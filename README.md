@@ -1,5 +1,7 @@
 # Crash Game
 
+<iframe src="https://giphy.com/embed/y3bWBhqVI1xZLsdzi7" width="480" height="202" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/y3bWBhqVI1xZLsdzi7">via GIPHY</a></p>
+
 ## Hack In Or Git Out ##
  > This single page web game should get your blood flowing and time flying!
 
